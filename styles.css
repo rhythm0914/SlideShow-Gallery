@@ -1,0 +1,317 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* Gallery Container */
+.gallery-container {
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    margin: auto;
+}
+
+/* Main Image View */
+.gallery-view {
+    position: relative;
+    width: 100%;
+    max-height: 500px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9; /* Adjust to fit your images */
+}
+
+.gallery-view img,
+canvas {
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+    border-radius: 10px;
+    background: black;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Navigation Buttons */
+.controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.controls button {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s;
+}
+
+.controls button:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Slideshow Fade Animation */
+.fade {
+    animation: fadeEffect 1.5s ease-in-out;
+}
+
+@keyframes fadeEffect {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+/* Grid View */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.image-container {
+    position: relative;
+}
+
+.thumb {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.3s;
+}
+
+.thumb:hover {
+    transform: scale(1.1);
+}
+
+/* Download & Share Buttons */
+.download-btn, .share-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.download-btn {
+    right: 35px;
+}
+
+/* Toggle Buttons */
+.toggle-buttons {
+    margin-top: 10px;
+}
+
+.toggle-buttons button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.toggle-buttons button:hover {
+    background: #666;
+}
+
+.view-gallery-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px; /* Adjust based on your image size */
+    height: 100px; /* Adjust based on your image size */
+    background-color: rgba(255, 255, 255, 0.2); /* Match gallery theme */
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.view-gallery-btn i {
+    font-size: 50px; /* Adjust the size to match images */
+    color: white;
+}
+
+.view-gallery-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+/* Lightbox Modal */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    text-align: center;
+    padding-top: 10%;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 10px;
+}
+
+/* Fullscreen View */
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: red;
+}
+
+/* Hidden Elements */
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+}
+
+.comment-section {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #222;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.comment-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 5px;
+}
+
+#comment-list {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#comment-list li {
+    background: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.comment-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#comment-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: #444;
+    color: #fff;
+    font-size: 14px;
+    resize: none;
+}
+
+#comment-input:focus {
+    outline: 2px solid #ff4747;
+}
+
+.comment-input-container button {
+    margin-left: 8px;
+    padding: 8px 12px;
+    background: #ff4747;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.comment-input-container button:hover {
+    background: #ff2c2c;
+}
+
+/* Scrollbar Styling */
+#comment-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#comment-list::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+
+/* Footer */
+footer {
+    width: 100%;
+    background: #1a1a1a;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 20px;
+    border-top: 2px solid #333;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}

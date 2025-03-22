@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Interactive Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Advanced Interactive Gallery</h1>
+         
+
+    </header>
+
+    <div class="gallery-container">
+        <div class="gallery-view">
+            <canvas id="galleryCanvas"></canvas>
+            <div class="controls">
+                <button id="prevBtn">❮</button>
+                <button id="nextBtn">❯</button>
+            </div>
+        </div>
+
+        <div class="gallery-grid">
+            <script>
+                for (let i = 1; i <= 10; i++) {
+                    document.write(`
+                        <div class="image-container">
+                            <img src="images/img${i}.jpg" class="thumb" onclick="openLightbox('images/img${i}.jpg')">
+                            
+                            <button class="download-btn" onclick="downloadImage('images/img${i}.jpg')">⬇</button>
+                            <button class="share-btn" onclick="shareImage('images/img${i}.jpg')">📤</button>
+                        </div>
+                    `);
+                }
+                
+            </script>
+            <a href="pinch.html" class="view-gallery-btn">
+    <i class="fas fa-images"></i>
+</a>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" class="lightbox-content">
+        
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Advanced Gallery. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

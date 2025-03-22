@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinch-to-Zoom Image Grid</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #222;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px;
+        }
+
+        /* Back Button */
+        .back-home-btn {
+            margin: 15px;
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        .back-home-btn:hover {
+            background-color: #e64a19;
+        }
+
+        /* Gallery Grid with Auto Resizing */
+        .gallery {
+            display: grid;
+            gap: 10px;
+            padding: 10px;
+            width: 100%;
+            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Auto-resizing */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .image-container {
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 style="color: white;">Advanced Interactive Gallery</h1>
+    </header>
+
+    <!-- Back to Home Button -->
+    <a href="index.html" class="back-home-btn">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+    <!-- Gallery Grid -->
+    <div class="gallery" id="imageGrid"></div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightboxImg" src="">
+    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let grid = document.getElementById("imageGrid");
+
+        for (let i = 1; i <= 10; i++) {
+            let container = document.createElement("div");
+            container.classList.add("image-container");
+
+            let img = document.createElement("img");
+            img.src = `images/img${i}.jpg`;
+            img.classList.add("thumb");
+            img.onerror = function () {
+                console.error(`Error loading image: images/img${i}.jpg`);
+                this.style.display = "none"; // Hide missing images
+            };
+            img.onclick = () => openLightbox(img.src);
+
+            container.appendChild(img);
+            grid.appendChild(container);
+        }
+    });
+
+    function openLightbox(src) {
+        document.getElementById("lightboxImg").src = src;
+        document.getElementById("lightbox").style.display = "flex";
+    }
+
+    function closeLightbox() {
+        document.getElementById("lightbox").style.display = "none";
+    }
+
+    // Zoom handling for both touch and mouse
+    let zoomLevel = 1;
+    let gallery = document.querySelector(".gallery");
+
+    // Mouse scroll zoom (for laptops/desktops)
+    document.addEventListener("wheel", function (event) {
+        event.preventDefault(); // Prevent page scroll
+
+        if (event.deltaY < 0) {
+            zoomLevel *= 1.1; // Zoom in
+        } else {
+            zoomLevel /= 1.1; // Zoom out
+        }
+
+        zoomLevel = Math.max(0.5, Math.min(zoomLevel, 2));
+
+        let newSize = Math.floor(150 * zoomLevel);
+        gallery.style.gridTemplateColumns = `repeat(auto-fit, minmax(${newSize}px, 1fr))`;
+    });
+
+    // Pinch-to-zoom (for touch devices)
+    let startDistance = 0;
+
+    document.addEventListener("touchstart", function (e) {
+        if (e.touches.length === 2) {
+            startDistance = getDistance(e.touches[0], e.touches[1]);
+        }
+    });
+
+    document.addEventListener("touchmove", function (e) {
+        if (e.touches.length === 2) {
+            let currentDistance = getDistance(e.touches[0], e.touches[1]);
+            let scaleFactor = currentDistance / startDistance;
+
+            zoomLevel *= scaleFactor;
+            zoomLevel = Math.max(0.5, Math.min(zoomLevel, 2));
+
+            let newSize = Math.floor(150 * zoomLevel);
+            gallery.style.gridTemplateColumns = `repeat(auto-fit, minmax(${newSize}px, 1fr))`;
+
+            startDistance = currentDistance;
+            e.preventDefault();
+        }
+    });
+
+    function getDistance(touch1, touch2) {
+        let dx = touch2.clientX - touch1.clientX;
+        let dy = touch2.clientY - touch1.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+</script>
+
+
+</body>
+</html>
